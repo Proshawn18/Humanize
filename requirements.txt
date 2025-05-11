@@ -1,0 +1,3 @@
+Flask>=2.3
+google-generative-ai   # Google Gemini client; swap for your chosen free client
+python-dotenv          # for loading API keys from .env

@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Undetectable AI Text Generator</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    >
+    <style>
+      body { padding: 2rem; }
+      .file-input { margin-top: 1rem; }
+      #result { white-space: pre-wrap; background: #f8f9fa; padding: 1rem; border-radius: .5rem; }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="mb-4">Undetectable AI Text Generator</h1>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for cat, msg in messages %}
+            <div class="alert alert-{{ cat }} alert-dismissible fade show" role="alert">
+              {{ msg }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      <form method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+          <label for="user_text" class="form-label">Enter text or upload a file</label>
+          <textarea
+            id="user_text"
+            name="user_text"
+            class="form-control"
+            rows="5"
+            maxlength="{{ MAX_TEXT_CHARS }}"
+            placeholder="Paste text here (max {{ MAX_TEXT_CHARS }} chars)"
+          ></textarea>
+          <div class="form-text">Max {{ MAX_TEXT_CHARS }} characters.</div>
+        </div>
+        <div class="file-input">
+          <input class="form-control" type="file" id="user_file" name="user_file">
+          <div class="form-text">Max {{ (MAX_FILE_BYTES // 1_000_000) }} MB.</div>
+        </div>
+        <button type="submit" name="action" value="generate" class="btn btn-primary mt-3">
+          Generate Undetectable Text
+        </button>
+        <button
+          type="submit"
+          name="action"
+          value="report_broken"
+          class="btn btn-outline-warning mt-3"
+        >
+          Prompt isn’t working? Regenerate it
+        </button>
+      </form>
+
+      {% if result %}
+        <hr>
+        <h3>Result:</h3>
+        <div id="result">{{ result }}</div>
+      {% endif %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
